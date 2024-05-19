@@ -7,8 +7,9 @@
     "dev": "vite --port 3000",
     "dev:mocked": "vite --mode mocked",
     "build": "tsc && vite build",
+    "start": "serve -s dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "start": "vite preview",
+    "preview": "vite preview",
     "generate-types": "node scripts/generate-types.js",
     "prepare": "husky",
     "type-check": "tsc --noEmit"
@@ -35,6 +36,7 @@
     "react-router-dom": "^6.22.3",
     "react-select": "^5.8.0",
     "redux-persist": "^6.0.0",
+    "serve": "^14.2.3",
     "yup": "^1.4.0"
   },
   "devDependencies": {
