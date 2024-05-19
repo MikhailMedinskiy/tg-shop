@@ -67,7 +67,7 @@ export const ProductH = ({
           <Text mb={2} fontSize={'md'}>
             {price} UAH
           </Text>
-          {!hideVariant && <Box>Тип: {variant}</Box>}
+          {!hideVariant && <Box mb={2}>Тип: {variant}</Box>}
           {!hideDelete && (
             <Button
               position={'absolute'}
