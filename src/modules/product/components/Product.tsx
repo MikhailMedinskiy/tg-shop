@@ -20,6 +20,7 @@ import {
   AlertDialog,
   AlertDialogOverlay,
   AlertDialogContent,
+  IconButton,
 } from '@chakra-ui/react';
 import {
   FaRegHeart,
@@ -73,19 +74,16 @@ export const Product = ({ product }: ProductCartProps) => {
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Box borderRadius='lg' overflow='hidden'>
             <Box position={'relative'}>
-              <Button
-                leftIcon={product.is_liked ? <FaHeart /> : <FaRegHeart />}
+              <IconButton
+                aria-label={'toggle wishlist'}
+                icon={isWishlist ? <FaHeart /> : <FaRegHeart />}
                 colorScheme='teal'
+                mt='3'
                 position={'absolute'}
-                right={3}
-                top={3}
+                right={2}
+                top={0}
                 onClick={toggleWithList}
-                fontSize={'sm'}
-              >
-                {isWishlist
-                  ? 'Видалити зі списку бажань'
-                  : 'Додати в список бажань'}
-              </Button>
+              />
               <Image
                 src={`${API_URL}${getImage(product.variants, selectedVariant[0])}`}
                 alt={product.name}

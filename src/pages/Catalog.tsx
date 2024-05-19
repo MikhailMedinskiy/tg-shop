@@ -36,6 +36,8 @@ export const Catalog = () => {
                 fontWeight={'semibold'}
                 fontSize={'xl'}
                 textAlign={'center'}
+                color={'white'}
+                textShadow={'0 0 5px rgba(0, 0, 0,0.7)'}
               >
                 {item.name}
               </Flex>

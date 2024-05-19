@@ -267,10 +267,11 @@ const service = api.injectEndpoints({
           code,
         },
       }),
-      async onCacheEntryAdded(_request, { dispatch, cacheDataLoaded }) {
-        const { data } = await cacheDataLoaded;
 
-        dispatch(setPromo(data));
+      async onQueryStarted(_props, { dispatch, queryFulfilled }) {
+        await queryFulfilled.then(({ data }) => {
+          dispatch(setPromo(data));
+        });
       },
     }),
 
