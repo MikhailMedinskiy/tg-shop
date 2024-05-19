@@ -212,7 +212,10 @@ const service = api.injectEndpoints({
       providesTags: ['CartList'],
       async onQueryStarted(_props, { dispatch, queryFulfilled }) {
         await queryFulfilled.then(({ data }) => {
-          dispatch(setCardCount(data?.line_items?.length || 0));
+          const quantity = data?.line_items?.reduce((acc, item) => {
+            return acc + item.quantity;
+          }, 0);
+          dispatch(setCardCount(quantity || 0));
         });
       },
     }),
