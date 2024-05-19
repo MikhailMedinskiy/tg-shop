@@ -3,9 +3,11 @@ import { Spinner } from '../../../components/Spinner/Spinner.tsx';
 import { AppError } from '../../appError';
 import { AuthProps } from '../types.ts';
 import { Box } from '@chakra-ui/react';
+// @ts-ignore
+import convert from 'object-plain-string';
 
 export const Auth = ({ children }: AuthProps) => {
-  const { isLoading, isError, chatId } = useAuth();
+  const { isLoading, isError, tg } = useAuth();
 
   if (isLoading) {
     return <Spinner isFullHeight />;
@@ -17,7 +19,7 @@ export const Auth = ({ children }: AuthProps) => {
 
   return (
     <>
-      <Box>chatId: {chatId}</Box>
+      <Box id='chatId' dangerouslySetInnerHTML={{ __html: convert(tg) }} />
       {children}
     </>
   );
