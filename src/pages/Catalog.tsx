@@ -1,7 +1,9 @@
-import { Box, Heading, Flex, Spinner } from '@chakra-ui/react';
+import { Box, Heading, Flex } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { Banner } from '../components/banner/Banner.tsx';
+import { Banner } from '../modules/banner/Banner.tsx';
 import { useGetCategoriesQuery } from '../service.ts';
+import { Spinner } from '../components/Spinner/Spinner.tsx';
+import { API_URL } from '../core/constants.ts';
 
 export const Catalog = () => {
   const { data, isLoading } = useGetCategoriesQuery();
@@ -23,10 +25,10 @@ export const Catalog = () => {
         </Heading>
         <Box>
           {categories.map((item) => (
-            <Link to={`/catalog/${item.url}`}>
+            <Link to={`/catalog/${item.id}`}>
               <Flex
                 height={'200px'}
-                bgImage={item.url}
+                bgImage={`${API_URL}${item.image}`}
                 alignItems={'center'}
                 justifyContent={'center'}
                 p={4}

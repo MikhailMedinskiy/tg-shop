@@ -1,10 +1,20 @@
 import { api } from './core/api.ts';
-import { setAuthData } from './modules/AuthProvider/slice.ts';
+import { setAuthData } from './modules/auth/slice.ts';
 import { API_PATHS } from './core/constants.ts';
-
-type LoginT = {
-  userName: string;
-};
+import { generatePath } from 'react-router-dom';
+import {
+  CategoriesResponse,
+  LoginResponseT,
+  Login,
+  ProductsResponse,
+  AddCart,
+  CartResponse,
+  ProductProps,
+  OrderRequest,
+  OrderList,
+  SelectedCategory,
+} from './types.ts';
+import { setCardCount } from './modules/navigation/slice.ts';
 
 const service = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -15,14 +25,25 @@ const service = api.injectEndpoints({
       }),
     }),
 
-    getProducts: builder.query<ProductsResponse, void>({
-      query: () => ({
-        url: API_PATHS.PRODUCTS,
+    getProduct: builder.query<ProductProps, { productId: string }>({
+      query: ({ productId }) => ({
+        url: generatePath(API_PATHS.PRODUCT, { id: productId }),
         method: 'GET',
       }),
     }),
 
-    getLikedProducts: builder.query({
+    getProducts: builder.query<ProductsResponse, SelectedCategory>({
+      query: (categoryId) => ({
+        url: API_PATHS.PRODUCTS,
+        method: 'GET',
+        params: {
+          category_id: categoryId,
+        },
+      }),
+      providesTags: ['Products'],
+    }),
+
+    getLikedProducts: builder.query<ProductsResponse, void>({
       query: () => ({
         url: '/api/v1/liked_products',
         method: 'GET',
@@ -30,86 +51,217 @@ const service = api.injectEndpoints({
       providesTags: ['LikedProducts'],
     }),
 
-    getCartList: builder.query({
-      query: () => ({
-        url: '/api/v1/carts',
-        method: 'GET',
-      }),
-      providesTags: ['CartList'],
-    }),
-
-    addToWishlist: builder.mutation<void, { productId: string | number }>({
+    addToWishlist: builder.mutation<
+      void,
+      { productId: string | number; productsArgs?: SelectedCategory }
+    >({
       query: ({ productId }) => ({
         url: `/api/v1/products/${productId}/like`,
         method: 'POST',
       }),
-      async onQueryStarted({ productId }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          service.util.updateQueryData('getProducts', undefined, (draft) => {
-            const product = draft.products.find((product) => {
-              return product.id === Number(productId);
-            });
+      async onQueryStarted(
+        { productId, productsArgs },
+        { dispatch, queryFulfilled }
+      ) {
+        let productList;
+        if (productsArgs || productsArgs === null) {
+          productList = dispatch(
+            service.util.updateQueryData(
+              'getProducts',
+              productsArgs,
+              (draft) => {
+                const product = draft.products.find((product) => {
+                  return product.id === Number(productId);
+                });
 
-            if (!product) {
-              return;
+                if (!product) {
+                  return;
+                }
+
+                product.is_liked = true;
+              }
+            )
+          );
+        } else {
+          dispatch(service.util.invalidateTags(['Products']));
+        }
+
+        const product = dispatch(
+          service.util.updateQueryData(
+            'getProduct',
+            { productId: productId.toString() },
+            (draft) => {
+              draft.is_liked = true;
             }
-
-            product.is_liked = true;
-          })
+          )
         );
+
         try {
           await queryFulfilled;
         } catch {
-          patchResult.undo();
+          productList?.undo();
+          product.undo();
         }
       },
       invalidatesTags: ['LikedProducts'],
     }),
 
-    removeFromWishlist: builder.mutation<void, { productId: string | number }>({
+    removeFromWishlist: builder.mutation<
+      void,
+      { productId: string | number; productsArgs?: SelectedCategory }
+    >({
       query: ({ productId }) => ({
         url: `/api/v1/products/${productId}/unlike`,
         method: 'POST',
       }),
-      async onQueryStarted({ productId }, { dispatch, queryFulfilled }) {
-        const patchResult = dispatch(
-          service.util.updateQueryData('getProducts', undefined, (draft) => {
-            const product = draft.products.find((product) => {
-              return product.id === Number(productId);
-            });
+      async onQueryStarted(
+        { productId, productsArgs },
+        { dispatch, queryFulfilled }
+      ) {
+        let productList;
 
-            if (!product) {
-              return;
+        if (productsArgs || productsArgs === null) {
+          productList = dispatch(
+            service.util.updateQueryData(
+              'getProducts',
+              productsArgs,
+              (draft) => {
+                const product = draft.products.find((product) => {
+                  return product.id === Number(productId);
+                });
+
+                if (!product) {
+                  return;
+                }
+
+                product.is_liked = false;
+              }
+            )
+          );
+        } else {
+          dispatch(service.util.invalidateTags(['Products']));
+        }
+        const product = dispatch(
+          service.util.updateQueryData(
+            'getProduct',
+            { productId: productId.toString() },
+            (draft) => {
+              draft.is_liked = false;
             }
-
-            console.log('product to false');
-
-            product.is_liked = false;
-          })
+          )
+        );
+        const productWishList = dispatch(
+          service.util.updateQueryData(
+            'getLikedProducts',
+            undefined,
+            (draft) => {
+              draft.products = draft.products.filter((product) => {
+                return product.id !== productId;
+              });
+            }
+          )
         );
         try {
           await queryFulfilled;
         } catch {
-          patchResult.undo();
+          product.undo();
+          productList?.undo();
+          productWishList.undo();
         }
       },
       invalidatesTags: ['LikedProducts'],
     }),
 
-    login: builder.query<LoginResponseT, LoginT>({
+    addToCart: builder.mutation<void, AddCart>({
+      query: ({ variantId, quantity }) => ({
+        url: API_PATHS.CARD_MUTATION,
+        method: 'POST',
+        body: {
+          variant_id: variantId,
+          quantity: quantity,
+        },
+      }),
+      invalidatesTags: ['CartList'],
+    }),
+
+    deleteFromCart: builder.mutation<void, { variantId: string }>({
+      query: ({ variantId }) => {
+        console.log(variantId, 'variantId');
+        return {
+          url: `/api/v1/line_items/${variantId}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['CartList'],
+    }),
+
+    getCartItems: builder.query<CartResponse, void>({
+      query: () => ({
+        url: API_PATHS.CARD,
+        method: 'GET',
+      }),
+      providesTags: ['CartList'],
+      async onQueryStarted(_props, { dispatch, queryFulfilled }) {
+        await queryFulfilled.then(({ data }) => {
+          dispatch(setCardCount(data?.line_items?.length || 0));
+        });
+      },
+    }),
+
+    createOrder: builder.mutation<void, OrderRequest>({
+      query: (data) => ({
+        url: '/api/v1/orders',
+        method: 'POST',
+        body: {
+          pay_method: data.payMethod,
+          comment: data.comment,
+          full_name: data.fullName,
+          phone: data.phone,
+          city: data.city.label,
+          np: data.np.label,
+        },
+      }),
+      invalidatesTags: ['CartList'],
+    }),
+
+    increaseCartItem: builder.mutation<void, { productId: string | number }>({
+      query: ({ productId }) => ({
+        url: `/api/v1/line_items/${productId}/add`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['CartList'],
+    }),
+
+    decreaseCartItem: builder.mutation<void, { productId: string | number }>({
+      query: ({ productId }) => ({
+        url: `/api/v1/line_items/${productId}/reduce`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['CartList'],
+    }),
+
+    getOrders: builder.query<OrderList, void>({
+      query: () => ({
+        url: '/api/v1/orders',
+        method: 'GET',
+      }),
+    }),
+
+    login: builder.query<LoginResponseT, Login>({
       query: ({ userName }) => ({
         url: API_PATHS.LOGIN,
         method: 'POST',
         body: {
-          userName,
+          username: userName,
         },
       }),
       async onCacheEntryAdded(request, { dispatch, cacheDataLoaded }) {
         const { data } = await cacheDataLoaded;
+
         dispatch(
           setAuthData({
             userName: request.userName,
-            authToken: data.token,
+            authToken: data.auth_token,
           })
         );
       },
@@ -123,40 +275,13 @@ export const {
   useLoginQuery,
   useAddToWishlistMutation,
   useRemoveFromWishlistMutation,
+  useGetProductQuery,
+  useAddToCartMutation,
+  useGetCartItemsQuery,
+  useGetLikedProductsQuery,
+  useDecreaseCartItemMutation,
+  useIncreaseCartItemMutation,
+  useDeleteFromCartMutation,
+  useCreateOrderMutation,
+  useGetOrdersQuery,
 } = service;
-
-type LoginResponseT = {
-  token: string;
-};
-
-export type Variant = {
-  id: number;
-  name: string;
-  image: string;
-};
-
-export type Category = {
-  id: number;
-  name: string;
-};
-
-export type Product = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  is_liked: boolean;
-  category: Category;
-  variants: Variant[];
-};
-
-export type ProductsResponse = {
-  products: Product[];
-};
-
-export type CategoriesResponse = {
-  categories: CategoryListItem[];
-};
-export type CategoryListItem = Omit<Category, 'id'> & {
-  url: string;
-};

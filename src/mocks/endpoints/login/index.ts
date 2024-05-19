@@ -6,10 +6,7 @@ export const authHandlers = [
 
   http.post(`${API_URL}${API_PATHS.LOGIN}`, () => {
     return HttpResponse.json({
-      success: true,
-      data: {
-        auth_token: '12345678',
-      },
+      auth_token: '12345678',
     });
   }),
 ];

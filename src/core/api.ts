@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from './store.ts';
-import { getToken } from '../modules/AuthProvider/slice.ts';
+import { getToken } from '../modules/auth/slice.ts';
 import { API_URL } from './constants.ts';
 
-const tagTypes = ['LikedProducts', 'CartList'] as const;
+const tagTypes = ['LikedProducts', 'CartList', 'Products'] as const;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_URL,
@@ -23,7 +23,7 @@ export function getHeaders({
 }: any): Headers {
   const headers = initHeaders || new Headers();
   if (accessToken) {
-    headers.set('Authorization', `Bearer ${accessToken}`);
+    headers.set('Authorization', accessToken);
   }
 
   return headers;

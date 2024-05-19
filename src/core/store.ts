@@ -3,9 +3,10 @@ import { api } from './api.ts';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 import { novaPoshApi } from './novaPoshta.ts';
-import { authReducer } from '../modules/AuthProvider/slice.ts';
+import { authReducer } from '../modules/auth/slice.ts';
 import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import storage from 'redux-persist/lib/storage';
+import { cartCountReducer } from '../modules/navigation/slice.ts'; // defaults to localStorage for web
 
 const persistConfig = {
   key: 'root',
@@ -15,6 +16,7 @@ const persistConfig = {
 
 export const rootReducer = combineReducers({
   auth: authReducer,
+  cartCount: cartCountReducer,
   [api.reducerPath]: api.reducer,
   [novaPoshApi.reducerPath]: novaPoshApi.reducer,
 });

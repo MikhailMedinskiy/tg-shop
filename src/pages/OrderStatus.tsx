@@ -11,96 +11,64 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { FaChevronDown } from 'react-icons/fa6';
-import { OrderSummary } from '../components/orderSummary/OrderSummary.tsx';
-import { ProductH } from '../components/productWithCounter/ProductH.tsx';
+// import { OrderSummary } from '../components/orderSummary/OrderSummary.tsx';
+import { ProductH } from '../modules/productWithCounter/ProductH.tsx';
+import { useGetOrdersQuery } from '../service.ts';
 
 export const OrderStatus = () => {
+  const { data, isLoading } = useGetOrdersQuery();
+
+  if (isLoading) {
+    return <Box>Loading...</Box>;
+  }
+
+  if (!data) {
+    return <Box>Ще немає замовлень</Box>;
+  }
+
+  console.log(data, 'data');
   return (
     <Box>
       <Heading as={'h1'} mb={4}>
         Ваші замовлення
       </Heading>
       <VStack width={'full'} alignItems={'stretch'}>
-        <Accordion allowToggle mb={2}>
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
-                <Flex
-                  alignItems={'center'}
-                  justifyContent={'space-between'}
-                  width={'full'}
-                >
-                  <Text>Замовлення #1231 </Text>
-                  <Icon as={FaChevronDown} />
-                </Flex>
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              <VStack>
-                <Text>Статус замовлення: Нове замовлення</Text>
-                <Text>Статус оплати: Очікування оплати</Text>
-                <ProductH hideCounter hideDelete />
-                <ProductH hideCounter hideDelete />
-                <ProductH hideCounter hideDelete />
-                <OrderSummary />
-              </VStack>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
+        {data.orders.map((order) => (
+          <Accordion allowToggle mb={2}>
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Flex
+                    alignItems={'center'}
+                    justifyContent={'space-between'}
+                    width={'full'}
+                  >
+                    <Text>Замовлення #{order.id} </Text>
+                    <Icon as={FaChevronDown} />
+                  </Flex>
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4}>
+                <VStack>
+                  <Text>Статус замовлення: {order.status}</Text>
+                  <Text>Статус оплати: {order.status}</Text>
+                  {order.line_items.map((item) => (
+                    <ProductH
+                      hideCounter
+                      hideDelete
+                      productName={item.variant.name}
+                      price={item.order_price}
+                      variant={item.variant.name}
+                      image={item.variant.image}
+                    />
+                  ))}
 
-        <Accordion allowToggle mb={2}>
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
-                <Flex
-                  alignItems={'center'}
-                  justifyContent={'space-between'}
-                  width={'full'}
-                >
-                  <Text>Замовлення #1232</Text>
-                  <Icon as={FaChevronDown} />
-                </Flex>
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              <VStack>
-                <Text>Статус замовлення: Нове замовлення</Text>
-                <Text>Статус оплати: Очікування оплати</Text>
-                <ProductH hideCounter hideDelete />
-                <ProductH hideCounter hideDelete />
-                <ProductH hideCounter hideDelete />
-                <OrderSummary />
-              </VStack>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-
-        <Accordion allowToggle mb={2}>
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
-                <Flex
-                  alignItems={'center'}
-                  justifyContent={'space-between'}
-                  width={'full'}
-                >
-                  <Text>Замовлення #1233</Text>
-                  <Icon as={FaChevronDown} />
-                </Flex>
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4}>
-              <VStack>
-                <Text>Статус замовлення: Нове замовлення</Text>
-                <Text>Статус оплати: Очікування оплати</Text>
-                <ProductH hideCounter hideDelete />
-                <ProductH hideCounter hideDelete />
-                <ProductH hideCounter hideDelete />
-                <OrderSummary />
-              </VStack>
-            </AccordionPanel>
-          </AccordionItem>
-        </Accordion>
+                  {/*<OrderSummary variants={order.line_items} />*/}
+                </VStack>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
+        ))}
       </VStack>
     </Box>
   );

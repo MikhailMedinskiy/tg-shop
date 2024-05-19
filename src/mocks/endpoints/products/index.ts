@@ -9,7 +9,7 @@ const productsCard = {
       variant: {
         id: 1,
         name: 'Name',
-        image: 'url',
+        image: 'https://picsum.photos/300/300',
       },
       product: {
         id: 1,
@@ -39,11 +39,87 @@ export const productsHandlers = [
             {
               id: 1,
               name: 'name',
-              image: 'url',
+              image: 'https://picsum.photos/300/300',
             },
           ],
         },
       ],
+    });
+  }),
+
+  http.get(`${API_URL}${API_PATHS.CARD}`, () => {
+    return HttpResponse.json({
+      line_items: [
+        {
+          id: 1,
+          quantity: 1,
+          variant: {
+            id: 1,
+            name: 'Name',
+            image: 'https://picsum.photos/300/300',
+          },
+          product: {
+            id: 1,
+            price: 1,
+            name: 'Name',
+            description: 'Description',
+          },
+        },
+        {
+          id: 1,
+          quantity: 1,
+          variant: {
+            id: 1,
+            name: 'Name',
+            image: 'https://picsum.photos/300/300',
+          },
+          product: {
+            id: 1,
+            price: 1,
+            name: 'Name',
+            description: 'Description',
+          },
+        },
+      ],
+    });
+  }),
+
+  http.post(`${API_URL}${API_PATHS.CARD_MUTATION}`, () => {
+    return HttpResponse.json({
+      success: true,
+    });
+  }),
+
+  http.get(`${API_URL}${API_PATHS.PRODUCT}`, () => {
+    return HttpResponse.json({
+      product: {
+        id: 1,
+        name: 'name',
+        description: 'description',
+        price: 22,
+        is_liked: false,
+        category: {
+          id: 1,
+          name: 'name',
+        },
+        variants: [
+          {
+            id: 1,
+            name: 'green',
+            image: 'https://picsum.photos/300/300',
+          },
+          {
+            id: 2,
+            name: 'red',
+            image: 'https://picsum.photos/300/300',
+          },
+          {
+            id: 4,
+            name: 'yellow',
+            image: 'https://picsum.photos/300/300',
+          },
+        ],
+      },
     });
   }),
 
@@ -69,6 +145,7 @@ export const productsHandlers = [
         {
           id: 1,
           name: 'name',
+          image: 'https://picsum.photos/300/300',
           description: 'description',
           price: 22,
           is_liked: true,
@@ -80,7 +157,32 @@ export const productsHandlers = [
             {
               id: 1,
               name: 'name',
-              image: 'url',
+              image: 'https://picsum.photos/300/300',
+            },
+          ],
+        },
+      ],
+    });
+  }),
+
+  http.get(`${API_URL}/api/v1/liked_products`, () => {
+    return HttpResponse.json({
+      products: [
+        {
+          id: 1,
+          name: 'name',
+          description: 'description',
+          price: 22,
+          is_liked: true,
+          category: {
+            id: 1,
+            name: 'name',
+          },
+          variants: [
+            {
+              id: 1,
+              name: 'name',
+              image: 'https://picsum.photos/300/300',
             },
           ],
         },
@@ -98,7 +200,7 @@ export const productsHandlers = [
             {
               id: 3,
               name: 'red',
-              image: 'url',
+              image: 'https://picsum.photos/300/300',
             },
           ],
         },

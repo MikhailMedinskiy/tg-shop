@@ -1,20 +1,34 @@
-import { Box, VStack, Button, Heading } from '@chakra-ui/react';
-import { ProductH } from '../components/productWithCounter/ProductH.tsx';
+import { Box, VStack } from '@chakra-ui/react';
+import { useGetLikedProductsQuery } from '../service.ts';
+import { Spinner } from '../components/Spinner/Spinner.tsx';
+
+import { AppError } from '../modules/appError';
+import { PageTitle } from '../components/pageTitle/PageTitle.tsx';
+
+import { EmptyWishList } from '../modules/wishlist/components/EmptyWishList.tsx';
+import { WishlistProducts } from '../modules/wishlist/components/WishlistProducts.tsx';
 
 export const Wishlist = () => {
+  const { data, isLoading, isError } = useGetLikedProductsQuery();
+  const products = data?.products || [];
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return <AppError />;
+  }
+
+  if (!products.length) {
+    return <EmptyWishList />;
+  }
+
   return (
     <Box>
-      <Heading as={'h1'} mb={4}>
-        Вподобайки
-      </Heading>
+      <PageTitle title={'Вподобайки'} />
       <VStack>
-        <ProductH hideCounter>
-          <VStack justifyContent={'stretch'} px={4} pb={4}>
-            <Button width={'full'} colorScheme={'teal'}>
-              Відкрити товар
-            </Button>
-          </VStack>
-        </ProductH>
+        <WishlistProducts products={products} />
       </VStack>
     </Box>
   );

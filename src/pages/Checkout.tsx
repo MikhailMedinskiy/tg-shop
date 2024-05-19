@@ -1,70 +1,24 @@
-import { Button, Heading, VStack } from '@chakra-ui/react';
-import { OrderSummary } from '../components/orderSummary/OrderSummary.tsx';
-import { ProductH } from '../components/productWithCounter/ProductH.tsx';
-import { DeliverySelect } from '../modules/DelivertySelect';
-import { SubmitHandler, useForm, FormProvider } from 'react-hook-form';
-import { PromoCode } from '../modules/PromoCode';
-import { Payment } from '../modules/Payment/Payment.tsx';
-import { CustomerInfo } from '../modules/CustomerInfo';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-
-export type CheckoutFormProps = {
-  products: string;
-  promoCode: string;
-  name: string;
-  phone: string;
-  city: { label: string; value: string } | null;
-  warehouse: { label: string; value: string } | null;
-  payment: 'afterCash' | 'cash';
-};
-
-const schema = yup.object({
-  products: yup.string().required("Це поле обов'язкове"),
-  promoCode: yup.string(),
-  name: yup.string().required("Це поле обов'язкове"),
-  phone: yup.string().required("Це поле обов'язкове"),
-  city: yup.object().required("Це поле обов'язкове").nullable(),
-  warehouse: yup.object().required("Це поле обов'язкове").nullable(),
-  payment: yup.string().required("Це поле обов'язкове"),
-});
+import { useGetCartItemsQuery } from '../service.ts';
+import { EmptyCart } from '../modules/cart';
+import { Checkout as CheckoutPage } from '../modules/checkout/components/Checkout.tsx';
+import { Spinner } from '../components/Spinner/Spinner.tsx';
+import { AppError } from '../modules/appError';
 
 export const Checkout = () => {
-  const methods = useForm({
-    defaultValues: {
-      products: '',
-      promoCode: '',
-      name: '',
-      phone: '',
-      payment: 'afterCash',
-      city: undefined,
-      warehouse: undefined,
-    },
-    resolver: yupResolver(schema),
-  });
-  const { handleSubmit } = methods;
+  const { data, isError, isLoading } = useGetCartItemsQuery();
+  const variants = data?.line_items || [];
 
-  const onSubmit: SubmitHandler<any> = (data) => console.log(data);
+  if (isLoading) {
+    return <Spinner />;
+  }
 
-  return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <VStack width={'full'} alignItems={'start'}>
-          <Heading as={'h1'} mb={4}>
-            Замовлення
-          </Heading>
-          <ProductH hideCounter />
-          <PromoCode />
-          <OrderSummary />
-          <Payment />
-          <DeliverySelect />
-          <CustomerInfo />
+  if (isError) {
+    return <AppError />;
+  }
 
-          <Button colorScheme='teal' width={'full'} type={'submit'}>
-            Замовити
-          </Button>
-        </VStack>
-      </form>
-    </FormProvider>
-  );
+  if (!variants.length) {
+    return <EmptyCart />;
+  }
+
+  return <CheckoutPage variants={variants} />;
 };
