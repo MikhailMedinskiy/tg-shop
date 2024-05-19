@@ -41,6 +41,7 @@ export type CategoriesResponse = {
 
 export type Login = {
   userName: string;
+  queryId: string;
 };
 
 export type AddCart = {
@@ -98,3 +99,9 @@ export type OrderList = {
 };
 
 export type SelectedCategory = string | null;
+
+export type Discount = {
+  code: string;
+  id: number;
+  percentage_discount: string;
+};

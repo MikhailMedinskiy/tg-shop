@@ -4,7 +4,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Input,
   Button,
   Grid,
   GridItem,
@@ -15,13 +14,19 @@ import { useGetCategoriesQuery, useGetProductsQuery } from '../service.ts';
 import { useState } from 'react';
 import { SelectedCategory } from '../types.ts';
 import { NoResults } from '../components/NoResults';
+import { SearchProducts } from '../modules/searchProducts/SearchProducts.tsx';
+import { Spinner } from '../components/Spinner/Spinner.tsx';
+import Check from '../components/Check/Check.tsx';
 
 export const Home = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<SelectedCategory>(null);
 
-  const { data: productData, originalArgs } =
-    useGetProductsQuery(selectedCategory);
+  const {
+    data: productData,
+    originalArgs,
+    isFetching,
+  } = useGetProductsQuery(selectedCategory);
   const { data: categoriesData } = useGetCategoriesQuery();
 
   const products = productData?.products || [];
@@ -37,7 +42,9 @@ export const Home = () => {
   return (
     <Box>
       {/*search*/}
-      <Input placeholder='Search' mb={8} />
+      <Box mb={4}>
+        <SearchProducts />
+      </Box>
       {/*banner*/}
       <Box className={'banner'} mb={8}>
         <Banner />
@@ -68,31 +75,40 @@ export const Home = () => {
         </MenuList>
       </Menu>
 
-      {isEmpty ? (
-        <NoResults />
-      ) : (
-        <Grid
-          gridTemplateColumns={{
-            base: '1fr',
-            sm: '1fr 1fr',
-          }}
-          gap={2}
-        >
-          {products.map((item) => (
-            <GridItem key={item.id}>
-              <ProductCard
-                productsArgs={originalArgs || null}
-                name={item.name}
-                slug={item.id}
-                catalogName={item.category.name}
-                price={item.price}
-                images={item.variants[0].image}
-                isWishlist={item.is_liked}
-              />
-            </GridItem>
-          ))}
-        </Grid>
-      )}
+      <Check>
+        <Check.If state={isFetching}>
+          <Box m={12}>
+            <Spinner />
+          </Box>
+        </Check.If>
+        <Check.If state={isEmpty}>
+          <NoResults />
+        </Check.If>
+
+        <Check.Else>
+          <Grid
+            gridTemplateColumns={{
+              base: '1fr',
+              sm: '1fr 1fr',
+            }}
+            gap={2}
+          >
+            {products.map((item) => (
+              <GridItem key={item.id}>
+                <ProductCard
+                  productsArgs={originalArgs || null}
+                  name={item.name}
+                  slug={item.id}
+                  catalogName={item.category.name}
+                  price={item.price}
+                  images={item.variants[0].image}
+                  isWishlist={item.is_liked}
+                />
+              </GridItem>
+            ))}
+          </Grid>
+        </Check.Else>
+      </Check>
     </Box>
   );
 };

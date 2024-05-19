@@ -6,17 +6,19 @@ import { novaPoshApi } from './novaPoshta.ts';
 import { authReducer } from '../modules/auth/slice.ts';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { cartCountReducer } from '../modules/navigation/slice.ts'; // defaults to localStorage for web
+import { cartCountReducer } from '../modules/navigation/slice.ts';
+import { promoReducer } from '../modules/cart/slice.ts'; // defaults to localStorage for web
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth'],
+  whitelist: ['auth', 'promo'],
 };
 
 export const rootReducer = combineReducers({
   auth: authReducer,
   cartCount: cartCountReducer,
+  promo: promoReducer,
   [api.reducerPath]: api.reducer,
   [novaPoshApi.reducerPath]: novaPoshApi.reducer,
 });

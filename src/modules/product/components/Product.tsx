@@ -60,7 +60,7 @@ export const Product = ({ product }: ProductCartProps) => {
           />
 
           <Box p='2'>
-            <Flex alignItems='baseline' mb={4}>
+            <Flex alignItems='baseline'>
               <Heading as={'h1'} fontSize={'x-large'} mt={2} lineHeight='tight'>
                 {product.name}
               </Heading>

@@ -1,16 +1,21 @@
 import { Divider, Text, VStack } from '@chakra-ui/react';
 import { CartItem } from '../../../types.ts';
+import { useAppSelector } from '../../../core/hooks.ts';
+import { getDiscount } from '../../cart/slice.ts';
 
 type OrderSummaryProps = {
   variants: CartItem[];
 };
 export const TotalInfo = ({ variants }: OrderSummaryProps) => {
+  const discount = useAppSelector(getDiscount);
   const total = variants.reduce(
     (acc, item) => acc + item.product.price * item.quantity,
     0
   );
 
   const quantity = variants.reduce((acc, item) => acc + item.quantity, 0);
+
+  const totalWithDiscount = discount ? total - (total * discount) / 100 : total;
 
   return (
     <VStack
@@ -26,9 +31,9 @@ export const TotalInfo = ({ variants }: OrderSummaryProps) => {
       </Text>
       <Text>Загальна кількість товарів: {quantity}</Text>
       <Text>Сума замовлення: UAH {total}</Text>
-      {/*<Text>Знижка: 20%</Text>*/}
+      {discount && <Text>Знижка: {discount}%</Text>}
       <Divider />
-      <Text>До сплати: UAH {total}</Text>
+      <Text>До сплати: UAH {totalWithDiscount}</Text>
     </VStack>
   );
 };

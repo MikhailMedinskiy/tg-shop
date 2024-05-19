@@ -10,7 +10,7 @@ export const Product = () => {
   const { isLoading, isFetching, isError, product } = useProduct();
 
   if (isLoading || isFetching) {
-    return <Spinner />;
+    return <Spinner isFullHeight />;
   }
 
   if (isError) {

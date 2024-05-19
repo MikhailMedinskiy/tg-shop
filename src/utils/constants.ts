@@ -12,3 +12,5 @@ export const PATHS = {
   oferta: '/oferta',
   delivery: '/delivery',
 } as const;
+
+export const DEBOUNCE_DELAY = 300;

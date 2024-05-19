@@ -10,7 +10,7 @@ export const Catalog = () => {
   const categories = data?.categories || [];
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner isFullHeight />;
   }
 
   return (

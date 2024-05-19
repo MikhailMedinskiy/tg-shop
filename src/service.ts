@@ -13,8 +13,10 @@ import {
   OrderRequest,
   OrderList,
   SelectedCategory,
+  Discount,
 } from './types.ts';
 import { setCardCount } from './modules/navigation/slice.ts';
+import { setPromo } from './modules/cart/slice.ts';
 
 const service = api.injectEndpoints({
   endpoints: (builder) => ({
@@ -36,11 +38,19 @@ const service = api.injectEndpoints({
       query: (categoryId) => ({
         url: API_PATHS.PRODUCTS,
         method: 'GET',
-        params: {
-          category_id: categoryId,
-        },
+        params: categoryId ? { category_id: categoryId } : {},
       }),
       providesTags: ['Products'],
+    }),
+
+    productsSearch: builder.query<ProductsResponse, string>({
+      query: (search) => ({
+        url: API_PATHS.PRODUCTS,
+        method: 'GET',
+        params: {
+          search,
+        },
+      }),
     }),
 
     getLikedProducts: builder.query<ProductsResponse, void>({
@@ -186,7 +196,6 @@ const service = api.injectEndpoints({
 
     deleteFromCart: builder.mutation<void, { variantId: string }>({
       query: ({ variantId }) => {
-        console.log(variantId, 'variantId');
         return {
           url: `/api/v1/line_items/${variantId}`,
           method: 'DELETE',
@@ -247,12 +256,28 @@ const service = api.injectEndpoints({
       }),
     }),
 
+    getDiscounts: builder.query<Discount, string>({
+      query: (code) => ({
+        url: '/api/v1/promo_codes',
+        method: 'GET',
+        params: {
+          code,
+        },
+      }),
+      async onCacheEntryAdded(_request, { dispatch, cacheDataLoaded }) {
+        const { data } = await cacheDataLoaded;
+
+        dispatch(setPromo(data));
+      },
+    }),
+
     login: builder.query<LoginResponseT, Login>({
-      query: ({ userName }) => ({
+      query: ({ userName, queryId }) => ({
         url: API_PATHS.LOGIN,
         method: 'POST',
         body: {
           username: userName,
+          tg_chat_id: queryId,
         },
       }),
       async onCacheEntryAdded(request, { dispatch, cacheDataLoaded }) {
@@ -284,4 +309,6 @@ export const {
   useDeleteFromCartMutation,
   useCreateOrderMutation,
   useGetOrdersQuery,
+  useLazyProductsSearchQuery,
+  useLazyGetDiscountsQuery,
 } = service;

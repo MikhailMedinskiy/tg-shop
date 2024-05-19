@@ -26,7 +26,6 @@ export const OrderStatus = () => {
     return <Box>Ще немає замовлень</Box>;
   }
 
-  console.log(data, 'data');
   return (
     <Box>
       <Heading as={'h1'} mb={4}>

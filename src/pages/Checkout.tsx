@@ -9,7 +9,7 @@ export const Checkout = () => {
   const variants = data?.line_items || [];
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner isFullHeight />;
   }
 
   if (isError) {

@@ -10,7 +10,6 @@ export const DeliverySelect = () => {
     formState: { errors },
   } = useFormContext<CheckoutFormProps>();
 
-  console.log(errors, 'errors');
   return (
     <Box width={'full'} mb={4}>
       <Text mb={2}>Доставка: Нова пошта</Text>

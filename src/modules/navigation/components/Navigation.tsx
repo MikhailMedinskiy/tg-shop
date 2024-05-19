@@ -14,7 +14,6 @@ import { NavigationProps } from '../types.ts';
 
 export const Navigation = ({ onToggle, isMenuOpen }: NavigationProps) => {
   const count = useAppSelector(getCartCount);
-  console.log(count, 'data');
   const { pathname } = useLocation();
 
   return (

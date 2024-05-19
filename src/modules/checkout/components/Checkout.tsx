@@ -13,6 +13,9 @@ import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CheckoutProps } from '../types.ts';
+import { PromoCode } from '../../cart';
+import { getPromoCode } from '../../cart/slice.ts';
+import { useAppSelector } from '../../../core/hooks.ts';
 
 const schema = yup.object({
   payMethod: yup.string().required("Це поле обов'язкове"),
@@ -27,6 +30,7 @@ export const Checkout = ({ variants }: CheckoutProps) => {
   const [createOrder] = useCreateOrderMutation();
   const [deleteItem] = useDeleteFromCartMutation();
   const navigate = useNavigate();
+  const promoCode = useAppSelector(getPromoCode);
 
   const methods = useForm({
     defaultValues: {
@@ -42,7 +46,10 @@ export const Checkout = ({ variants }: CheckoutProps) => {
   const { handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<any> = (data) =>
-    createOrder(data)
+    createOrder({
+      ...data,
+      promo_code: promoCode,
+    })
       .unwrap()
       .then(() => {
         navigate('/');
@@ -67,7 +74,7 @@ export const Checkout = ({ variants }: CheckoutProps) => {
               }
             />
           ))}
-          {/*<PromoCode />*/}
+          <PromoCode />
           <TotalInfo variants={variants} />
           <Payment />
           <DeliverySelect />

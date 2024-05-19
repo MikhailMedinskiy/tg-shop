@@ -2,6 +2,8 @@ import { AsyncSelect } from 'chakra-react-select';
 import { Controller, useFormContext } from 'react-hook-form';
 import { novaPoshtaResponseT, useGetCitiesMutation } from '../service.ts';
 import { CheckoutFormProps } from '../types.ts';
+import debouncePromise from 'debounce-promise';
+import { DEBOUNCE_DELAY } from '../../../utils/constants.ts';
 
 export const CitiesSelect = () => {
   const { control } = useFormContext<CheckoutFormProps>();
@@ -15,6 +17,8 @@ export const CitiesSelect = () => {
           .then((response: novaPoshtaResponseT) => getCitiesOptions(response))
           .catch(() => []);
 
+  const debouncedLoadOptions = debouncePromise(loadOptions, DEBOUNCE_DELAY);
+
   return (
     <Controller
       name='city'
@@ -23,7 +27,7 @@ export const CitiesSelect = () => {
         <AsyncSelect
           noOptionsMessage={() => 'Місто не знайдено'}
           menuPortalTarget={document.body}
-          loadOptions={loadOptions}
+          loadOptions={debouncedLoadOptions}
           placeholder={'Введіть місто'}
           components={{
             DropdownIndicator: null,

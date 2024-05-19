@@ -7,7 +7,7 @@ export const AppBootstrap = ({ children }: AppBootstrapProps) => {
   const { isLoading, isError } = useGetCartItemsQuery();
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner isFullHeight />;
   }
 
   if (isError) {

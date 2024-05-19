@@ -1,5 +1,5 @@
 import { ProductH } from '../../productWithCounter/ProductH.tsx';
-import { Button, VStack } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import { generatePath, NavLink } from 'react-router-dom';
 import { PATHS } from '../../../utils/constants.ts';
 import { WishlistProductsProps } from '../types.ts';
@@ -20,7 +20,7 @@ export const WishlistProducts = ({ products }: WishlistProductsProps) => {
         removeFromWishlist({ productId: product.id });
       }}
     >
-      <VStack justifyContent={'stretch'} px={4} pb={4}>
+      <Box px={4} pb={4} ml={'auto'}>
         <NavLink
           style={{ width: '100%', display: 'block' }}
           to={generatePath(PATHS.product, { slug: `${product.id}` })}
@@ -29,7 +29,7 @@ export const WishlistProducts = ({ products }: WishlistProductsProps) => {
             Переглянути
           </Button>
         </NavLink>
-      </VStack>
+      </Box>
     </ProductH>
   ));
 };

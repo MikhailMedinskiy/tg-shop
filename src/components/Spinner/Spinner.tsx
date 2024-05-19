@@ -8,10 +8,20 @@ const fullHeightStyles = {
   transform: 'translate(-50%, -50%)',
 };
 
-export const Spinner = () => {
+type SpinnerProps = {
+  isFullHeight?: boolean;
+};
+
+export const Spinner = ({ isFullHeight }: SpinnerProps) => {
   return (
-    <Center sx={fullHeightStyles}>
-      <ChakraSpinner />
+    <Center sx={isFullHeight ? fullHeightStyles : {}}>
+      <ChakraSpinner
+        thickness='4px'
+        speed='0.65s'
+        emptyColor='gray.200'
+        color='teal'
+        size='xl'
+      />
     </Center>
   );
 };

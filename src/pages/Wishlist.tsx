@@ -13,7 +13,7 @@ export const Wishlist = () => {
   const products = data?.products || [];
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner isFullHeight />;
   }
 
   if (isError) {

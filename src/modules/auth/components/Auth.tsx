@@ -7,7 +7,7 @@ export const Auth = ({ children }: AuthProps) => {
   const { isLoading, isError } = useAuth();
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner isFullHeight />;
   }
 
   if (isError) {
