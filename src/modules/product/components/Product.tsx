@@ -76,10 +76,9 @@ export const Product = ({ product }: ProductCartProps) => {
               <Button
                 leftIcon={product.is_liked ? <FaHeart /> : <FaRegHeart />}
                 colorScheme='teal'
-                mt='3'
                 position={'absolute'}
-                right={10}
-                top={10}
+                right={3}
+                top={3}
                 onClick={toggleWithList}
                 fontSize={'sm'}
               >
