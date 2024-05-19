@@ -55,7 +55,8 @@ function Layout() {
 
   return (
     <Auth>
-      <Box pb={'78px'}>
+      {/*<Box pb={'78px'}>*/}
+      <Box>
         <Box p={4} position={'relative'}>
           <AppBootstrap>
             <Outlet />

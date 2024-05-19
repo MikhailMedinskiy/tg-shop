@@ -8,6 +8,7 @@ import { DEBOUNCE_DELAY } from '../../../utils/constants.ts';
 export const CitiesSelect = () => {
   const { control } = useFormContext<CheckoutFormProps>();
   const [fetch] = useGetCitiesMutation();
+
   const loadOptions = async (inputValue: string) =>
     fetch({ address: inputValue })
       .unwrap()
