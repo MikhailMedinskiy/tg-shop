@@ -55,10 +55,18 @@ function Layout() {
 
   return (
     <Auth>
-      <Box p={4} pb={0} position={'relative'}>
+      <Box p={4} pb={'78px'} position={'relative'} height={'100vh'}>
         <AppBootstrap>
-          <Outlet />
-          <Box position={'sticky'} bottom={0}>
+          <Box height={'100%'} overflow={'scroll'}>
+            <Outlet />
+          </Box>
+          <Box
+            position={'absolute'}
+            bottom={0}
+            width={'full'}
+            left={0}
+            right={0}
+          >
             <Navigation onToggle={onToggle} isMenuOpen={isOpen} />
           </Box>
           <Sidebar isOpen={isOpen} onClose={onClose} />
