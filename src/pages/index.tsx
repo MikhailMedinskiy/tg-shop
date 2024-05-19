@@ -55,9 +55,9 @@ function Layout() {
 
   return (
     <Auth>
-      <Box p={4} pb={'78px'} position={'relative'} height={'100vh'}>
+      <Box pb={'78px'} position={'relative'} height={'100vh'}>
         <AppBootstrap>
-          <Box height={'100%'} overflow={'scroll'}>
+          <Box p={4} height={'100%'} overflow={'scroll'}>
             <Outlet />
           </Box>
           <Box

@@ -72,10 +72,26 @@ export const Product = ({ product }: ProductCartProps) => {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Box borderRadius='lg' overflow='hidden'>
-            <Image
-              src={`${API_URL}${getImage(product.variants, selectedVariant[0])}`}
-              alt={product.name}
-            />
+            <Box position={'relative'}>
+              <Button
+                leftIcon={product.is_liked ? <FaHeart /> : <FaRegHeart />}
+                colorScheme='teal'
+                mt='3'
+                position={'absolute'}
+                right={10}
+                top={10}
+                onClick={toggleWithList}
+                fontSize={'sm'}
+              >
+                {isWishlist
+                  ? 'Видалити зі списку бажань'
+                  : 'Додати в список бажань'}
+              </Button>
+              <Image
+                src={`${API_URL}${getImage(product.variants, selectedVariant[0])}`}
+                alt={product.name}
+              />
+            </Box>
 
             <Box p='2'>
               <Flex alignItems='baseline'>
@@ -148,21 +164,6 @@ export const Product = ({ product }: ProductCartProps) => {
                   <AccordionPanel pb={4}>{product.description}</AccordionPanel>
                 </AccordionItem>
               </Accordion>
-
-              <Button
-                leftIcon={product.is_liked ? <FaHeart /> : <FaRegHeart />}
-                colorScheme='teal'
-                mt='3'
-                position={'absolute'}
-                right={10}
-                top={10}
-                onClick={toggleWithList}
-                fontSize={'sm'}
-              >
-                {isWishlist
-                  ? 'Видалити зі списку бажань'
-                  : 'Додати в список бажань'}
-              </Button>
 
               <Button colorScheme='teal' width={'full'} type={'submit'}>
                 Купити
