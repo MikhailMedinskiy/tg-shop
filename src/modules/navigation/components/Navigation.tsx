@@ -19,7 +19,7 @@ export const Navigation = ({ onToggle, isMenuOpen }: NavigationProps) => {
   return (
     <Card
       p={4}
-      // position={'fixed'}
+      position={'fixed'}
       left={0}
       bottom={0}
       width={'100%'}
