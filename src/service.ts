@@ -276,12 +276,12 @@ const service = api.injectEndpoints({
     }),
 
     login: builder.query<LoginResponseT, Login>({
-      query: ({ userName, queryId }) => ({
+      query: ({ userName, chatId }) => ({
         url: API_PATHS.LOGIN,
         method: 'POST',
         body: {
           username: userName,
-          tg_chat_id: queryId,
+          tg_chat_id: chatId,
         },
       }),
       async onCacheEntryAdded(request, { dispatch, cacheDataLoaded }) {

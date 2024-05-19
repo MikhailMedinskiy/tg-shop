@@ -41,7 +41,7 @@ export type CategoriesResponse = {
 
 export type Login = {
   userName: string;
-  queryId: string;
+  chatId: number;
 };
 
 export type AddCart = {

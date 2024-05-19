@@ -45,7 +45,7 @@ export default function App() {
 function Layout() {
   const { isOpen, onClose, onToggle } = useDisclosure();
   let location = useLocation();
-  const { tg } = useTelegram();
+  const { tg, chatId } = useTelegram();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -57,6 +57,7 @@ function Layout() {
     <Auth>
       <Box pb={'78px'} position={'relative'} height={'100vh'}>
         <AppBootstrap>
+          <Box>chatId: {chatId}</Box>
           <Box p={4} height={'100%'} overflow={'scroll'}>
             <Outlet />
           </Box>
