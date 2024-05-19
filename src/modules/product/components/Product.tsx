@@ -178,7 +178,7 @@ export const Product = ({ product }: ProductCartProps) => {
         leastDestructiveRef={cancelRef}
       >
         <AlertDialogOverlay>
-          <AlertDialogContent>
+          <AlertDialogContent mx={4}>
             <Flex
               alignItems='center'
               justifyContent='center'
@@ -186,11 +186,17 @@ export const Product = ({ product }: ProductCartProps) => {
               p={8}
             >
               <Icon as={FaCircleCheck} boxSize={24} color='green.400' />
-              <Heading as='h2' size='lg' mt={4} color='gray.600'>
+              <Heading
+                as='h2'
+                size='lg'
+                mt={4}
+                color='gray.600'
+                textAlign={'center'}
+              >
                 Товар успішно додано
               </Heading>
               <Text mt={2} color='gray.500' textAlign={'center'}></Text>
-              <ButtonGroup>
+              <ButtonGroup flexWrap={'wrap'} justifyContent={'center'}>
                 <Button
                   ref={cancelRef}
                   onClick={onClose}
