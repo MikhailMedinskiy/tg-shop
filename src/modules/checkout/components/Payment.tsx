@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form';
 
 export const Payment = () => {
   const { register, getValues } = useFormContext();
+
   return (
     <Box width={'full'} mb={4}>
       <Text mb={2}>Оплата</Text>

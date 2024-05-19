@@ -14,8 +14,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { CheckoutProps } from '../types.ts';
 import { PromoCode } from '../../cart';
-import { getPromoCode } from '../../cart/slice.ts';
-import { useAppSelector } from '../../../core/hooks.ts';
+import { getPromoCode, resetPromo } from '../../cart/slice.ts';
+import { useAppDispatch, useAppSelector } from '../../../core/hooks.ts';
 
 const schema = yup.object({
   payMethod: yup.string().required("Це поле обов'язкове"),
@@ -27,6 +27,7 @@ const schema = yup.object({
 });
 
 export const Checkout = ({ variants }: CheckoutProps) => {
+  const dispatch = useAppDispatch();
   const [createOrder] = useCreateOrderMutation();
   const [deleteItem] = useDeleteFromCartMutation();
   const navigate = useNavigate();
@@ -52,6 +53,7 @@ export const Checkout = ({ variants }: CheckoutProps) => {
     })
       .unwrap()
       .then(() => {
+        dispatch(resetPromo());
         navigate('/');
       });
 

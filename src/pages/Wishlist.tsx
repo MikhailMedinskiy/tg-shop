@@ -1,10 +1,9 @@
 import { Box, VStack } from '@chakra-ui/react';
 import { useGetLikedProductsQuery } from '../service.ts';
 import { Spinner } from '../components/Spinner/Spinner.tsx';
-
 import { AppError } from '../modules/appError';
-import { PageTitle } from '../components/pageTitle/PageTitle.tsx';
 
+import { PageTitle } from '../components/pageTitle/PageTitle.tsx';
 import { EmptyWishList } from '../modules/wishlist/components/EmptyWishList.tsx';
 import { WishlistProducts } from '../modules/wishlist/components/WishlistProducts.tsx';
 
