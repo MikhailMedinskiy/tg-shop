@@ -10,18 +10,16 @@ export const SearchProducts = () => {
   const navigate = useNavigate();
 
   const loadOptions = async (search: string) =>
-    search.length < 3
-      ? []
-      : handleSearch(search)
-          .unwrap()
-          // @ts-ignore
-          .then((response) =>
-            response.products.map((item) => ({
-              label: item.name,
-              value: item.id,
-            }))
-          )
-          .catch(() => []);
+    handleSearch(search)
+      .unwrap()
+      // @ts-ignore
+      .then((response) =>
+        response.products.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }))
+      )
+      .catch(() => []);
 
   const debouncedLoadOptions = debouncePromise(loadOptions, DEBOUNCE_DELAY);
 
@@ -35,6 +33,7 @@ export const SearchProducts = () => {
     <AsyncSelect
       noOptionsMessage={() => 'Нічогоне знайдено'}
       menuPortalTarget={document.body}
+      loadingMessage={() => 'Завантаження...'}
       loadOptions={debouncedLoadOptions}
       placeholder={'Введіть назву товару'}
       components={{

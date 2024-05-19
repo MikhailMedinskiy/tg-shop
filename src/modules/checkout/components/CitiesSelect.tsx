@@ -9,13 +9,11 @@ export const CitiesSelect = () => {
   const { control } = useFormContext<CheckoutFormProps>();
   const [fetch] = useGetCitiesMutation();
   const loadOptions = async (inputValue: string) =>
-    inputValue.length < 3
-      ? []
-      : fetch({ address: inputValue })
-          .unwrap()
-          // @ts-ignore
-          .then((response: novaPoshtaResponseT) => getCitiesOptions(response))
-          .catch(() => []);
+    fetch({ address: inputValue })
+      .unwrap()
+      // @ts-ignore
+      .then((response: novaPoshtaResponseT) => getCitiesOptions(response))
+      .catch(() => []);
 
   const debouncedLoadOptions = debouncePromise(loadOptions, DEBOUNCE_DELAY);
 
@@ -26,6 +24,7 @@ export const CitiesSelect = () => {
       render={({ field }) => (
         <AsyncSelect
           noOptionsMessage={() => 'Місто не знайдено'}
+          loadingMessage={() => 'Завантаження...'}
           menuPortalTarget={document.body}
           loadOptions={debouncedLoadOptions}
           placeholder={'Введіть місто'}
