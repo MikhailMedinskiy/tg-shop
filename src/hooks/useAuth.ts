@@ -4,8 +4,8 @@ import { skipToken } from '@reduxjs/toolkit/query';
 
 export const useAuth = () => {
   const { tg } = useTelegram();
-  const userName = tg?.initDataUnsafe?.user?.username;
-  const chatId = tg?.initDataUnsafe?.query_id;
+  const userName = tg?.initDataUnsafe?.user?.username || 'sane';
+  const chatId = tg?.initDataUnsafe?.query_id || '123';
   // @ts-ignore
   const {
     isLoading: isLoadingProfile,

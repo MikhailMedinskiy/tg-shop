@@ -35,7 +35,7 @@ export const ProductList = () => {
                 slug={item.id}
                 catalogName={item.category.name}
                 price={item.price}
-                images={item.variants[0].image}
+                images={item.image}
                 isWishlist={item.is_liked}
               />
             </GridItem>
