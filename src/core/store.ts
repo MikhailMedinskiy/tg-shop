@@ -28,7 +28,9 @@ export const store = configureStore({
     rootReducer
   ),
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([api.middleware, novaPoshApi.middleware]),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat([api.middleware, novaPoshApi.middleware]),
 });
 
 setupListeners(store.dispatch);
