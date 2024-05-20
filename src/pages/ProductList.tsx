@@ -3,11 +3,20 @@ import { ProductCard } from '../modules/productCard';
 import { useGetProductsQuery } from '../service.ts';
 import { useParams } from 'react-router-dom';
 import { NoResults } from '../components/NoResults';
+import { Spinner } from '../components/Spinner/Spinner.tsx';
 
 export const ProductList = () => {
   const { slug } = useParams();
-  const { data: productData, originalArgs } = useGetProductsQuery(slug || null);
+  const {
+    data: productData,
+    originalArgs,
+    isLoading,
+  } = useGetProductsQuery(slug || null);
   const products = productData?.products || [];
+
+  if (isLoading) {
+    return <Spinner isFullHeight />;
+  }
 
   return (
     <Box>
