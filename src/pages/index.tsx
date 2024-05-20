@@ -1,8 +1,6 @@
 import { Routes, Route, Outlet, useLocation } from 'react-router-dom';
-// import { useGetProductsQuery } from '../service.ts';
 import { Home } from './Home.tsx';
 import { Box, useDisclosure } from '@chakra-ui/react';
-
 import { Navigation } from '../modules/navigation';
 import { Sidebar } from '../modules/sidebar/components/Sidebar.tsx';
 import { Catalog } from './Catalog.tsx';
@@ -12,7 +10,6 @@ import { Product } from './Product.tsx';
 import { Wishlist } from './Wishlist.tsx';
 import { Cart } from './Cart.tsx';
 import { Checkout } from './Checkout.tsx';
-import { useTelegram } from '../hooks/useTelegram.ts';
 import { OrderStatus } from './OrderStatus.tsx';
 import { ProductList } from './ProductList.tsx';
 import { Contacts } from './Contacts.tsx';
@@ -45,11 +42,9 @@ export default function App() {
 function Layout() {
   const { isOpen, onClose, onToggle } = useDisclosure();
   let location = useLocation();
-  const { tg } = useTelegram();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    tg.expand();
     onClose();
   }, [location]);
 
