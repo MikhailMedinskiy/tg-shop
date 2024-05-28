@@ -35,7 +35,7 @@ export const Checkout = ({ variants }: CheckoutProps) => {
 
   const methods = useForm({
     defaultValues: {
-      payMethod: 'afterCash',
+      payMethod: 'cash',
       fullName: '',
       phone: '',
       city: undefined,

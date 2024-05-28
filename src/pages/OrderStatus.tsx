@@ -14,12 +14,13 @@ import { FaChevronDown } from 'react-icons/fa6';
 // import { OrderSummary } from '../components/orderSummary/OrderSummary.tsx';
 import { ProductH } from '../modules/productWithCounter/ProductH.tsx';
 import { useGetOrdersQuery } from '../service.ts';
+import { Spinner } from '../components/Spinner/Spinner.tsx';
 
 export const OrderStatus = () => {
   const { data, isLoading } = useGetOrdersQuery();
 
   if (isLoading) {
-    return <Box>Loading...</Box>;
+    return <Spinner isFullHeight />;
   }
 
   if (!data) {

@@ -10,10 +10,10 @@ export const Payment = () => {
       <RadioGroup defaultValue={getValues('payMethod')}>
         <VStack alignItems={'start'}>
           <Radio value='cash' mb={1} {...register('payMethod')}>
-            Готівкою
+            Hакладений платіж
           </Radio>
-          <Radio value='afterCash' {...register('payMethod')}>
-            Післяплата
+          <Radio value='card' {...register('payMethod')}>
+            На картку
           </Radio>
         </VStack>
       </RadioGroup>
