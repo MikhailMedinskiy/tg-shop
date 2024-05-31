@@ -1,4 +1,4 @@
-export const API_URL = 'https://tgshopbot-1c3a3b8f240d.herokuapp.com';
+export const API_URL = import.meta.env.VITE_API_URL as string;
 
 export const API_PATHS = {
   LOGIN: '/api/v1/users',
