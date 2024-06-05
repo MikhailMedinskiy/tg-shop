@@ -62,42 +62,44 @@ export const ProductCard = ({
         top={0}
         onClick={toggleWithList}
       />
-      <Image
-        src={`${API_URL}/${images}`}
-        alt={name}
-        height={'200px'}
-        objectFit={'cover'}
-        width={'full'}
-      />
+      <NavLink to={generatePath(PATHS.product, { slug: `${slug}` })}>
+        <Image
+          src={`${API_URL}/${images}`}
+          alt={name}
+          height={'200px'}
+          objectFit={'cover'}
+          width={'full'}
+        />
+      </NavLink>
 
       <Box p='2' flexGrow={1}>
-        <Grid flexGrow={1} height={'100%'} gridTemplateRows={'1fr auto'}>
-          <GridItem>
-            <Flex alignItems='baseline'>
-              <Text mt='2' fontWeight='semibold' as='h4'>
-                {name}
-              </Text>
-            </Flex>
+        <NavLink to={generatePath(PATHS.product, { slug: `${slug}` })}>
+          <Grid flexGrow={1} height={'100%'} gridTemplateRows={'1fr auto'}>
+            <GridItem>
+              <Flex alignItems='baseline'>
+                <Text mt='2' fontWeight='semibold' as='h4'>
+                  {name}
+                </Text>
+              </Flex>
 
-            <Box>
-              <Text fontWeight='bold' color={'red'} lineHeight={'tight'}>
-                UAH {price}
-              </Text>
-            </Box>
+              <Box>
+                <Text fontWeight='bold' color={'red'} lineHeight={'tight'}>
+                  UAH {price}
+                </Text>
+              </Box>
 
-            <Box mt='2' alignItems='center'>
-              {catalogName}
-            </Box>
-          </GridItem>
+              <Box mt='2' alignItems='center'>
+                {catalogName}
+              </Box>
+            </GridItem>
 
-          <GridItem>
-            <NavLink to={generatePath(PATHS.product, { slug: `${slug}` })}>
+            <GridItem>
               <Button colorScheme='teal' mt='3' width={'full'}>
                 Відкрити товар
               </Button>
-            </NavLink>
-          </GridItem>
-        </Grid>
+            </GridItem>
+          </Grid>
+        </NavLink>
       </Box>
     </VStack>
   );
