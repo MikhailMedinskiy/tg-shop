@@ -8,7 +8,6 @@ import {
   Grid,
   GridItem,
 } from '@chakra-ui/react';
-import { Banner } from '../modules/banner/Banner.tsx';
 import { ProductCard } from '../modules/productCard';
 import { useGetCategoriesQuery, useGetProductsQuery } from '../service.ts';
 import { useState } from 'react';
@@ -46,9 +45,9 @@ export const Home = () => {
         <SearchProducts />
       </Box>
       {/*banner*/}
-      <Box className={'banner'} mb={8}>
-        <Banner />
-      </Box>
+      {/*<Box className={'banner'} mb={8}>*/}
+      {/*  <Banner />*/}
+      {/*</Box>*/}
       {/*menu*/}
       <Menu matchWidth>
         <MenuButton as={Button} minWidth={'100%'} mb={4}>
