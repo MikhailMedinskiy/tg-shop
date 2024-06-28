@@ -1,6 +1,5 @@
 import { Box, Heading, Flex } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { Banner } from '../modules/banner/Banner.tsx';
 import { useGetCategoriesQuery } from '../service.ts';
 import { Spinner } from '../components/Spinner/Spinner.tsx';
 import { API_URL } from '../core/constants.ts';
@@ -15,10 +14,6 @@ export const Catalog = () => {
 
   return (
     <Box>
-      <Box className={'banner'} mb={8}>
-        <Banner />
-      </Box>
-
       <Box>
         <Heading as={'h1'} mb={4}>
           Каталог

@@ -121,7 +121,7 @@ export const Product = ({ product }: ProductCartProps) => {
                 }
                 mb={6}
               >
-                <Stack direction='row' flexWrap={'wrap'}>
+                <Stack direction='column'>
                   {product.variants.map((item, index) => (
                     <Radio
                       m={1}

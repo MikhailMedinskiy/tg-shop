@@ -6,16 +6,19 @@ export const categoriesHandlers = [
     return HttpResponse.json({
       categories: [
         {
-          name: 'name 1',
-          url: 'url',
+          id: '1',
+          name: 'Nadf',
+          image: 'sdf',
         },
         {
-          name: 'name 2',
-          url: 'url',
+          id: '2',
+          name: 'Nadf',
+          image: 'sdf',
         },
         {
-          name: 'name 2',
-          url: 'url',
+          id: '3',
+          name: 'Nadf',
+          image: 'sdf',
         },
       ],
     });

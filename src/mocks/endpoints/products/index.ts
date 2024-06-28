@@ -4,15 +4,15 @@ import { API_PATHS, API_URL } from '../../../core/constants.ts';
 const productsCard = {
   cart_items: [
     {
-      id: 1,
+      id: '1',
       quantity: 1,
       variant: {
-        id: 1,
+        id: '1',
         name: 'Name',
         image: 'https://picsum.photos/300/300',
       },
       product: {
-        id: 1,
+        id: '1',
         price: 1,
         name: 'Name',
         description: 'Description',
@@ -26,18 +26,18 @@ export const productsHandlers = [
     return HttpResponse.json({
       products: [
         {
-          id: 1,
+          id: '1',
           name: 'name',
           description: 'description',
           price: 22,
           is_liked: false,
           category: {
-            id: 1,
+            id: '1',
             name: 'name',
           },
           variants: [
             {
-              id: 1,
+              id: '1',
               name: 'name',
               image: 'https://picsum.photos/300/300',
             },
@@ -51,30 +51,30 @@ export const productsHandlers = [
     return HttpResponse.json({
       line_items: [
         {
-          id: 1,
+          id: '1',
           quantity: 1,
           variant: {
-            id: 1,
+            id: '1',
             name: 'Name',
             image: 'https://picsum.photos/300/300',
           },
           product: {
-            id: 1,
+            id: '1',
             price: 1,
             name: 'Name',
             description: 'Description',
           },
         },
         {
-          id: 1,
+          id: '1',
           quantity: 1,
           variant: {
-            id: 1,
+            id: '1',
             name: 'Name',
             image: 'https://picsum.photos/300/300',
           },
           product: {
-            id: 1,
+            id: '1',
             price: 1,
             name: 'Name',
             description: 'Description',
@@ -92,34 +92,32 @@ export const productsHandlers = [
 
   http.get(`${API_URL}${API_PATHS.PRODUCT}`, () => {
     return HttpResponse.json({
-      product: {
+      id: 1,
+      name: 'name',
+      description: 'description',
+      price: 22,
+      is_liked: false,
+      category: {
         id: 1,
         name: 'name',
-        description: 'description',
-        price: 22,
-        is_liked: false,
-        category: {
-          id: 1,
-          name: 'name',
-        },
-        variants: [
-          {
-            id: 1,
-            name: 'green',
-            image: 'https://picsum.photos/300/300',
-          },
-          {
-            id: 2,
-            name: 'red',
-            image: 'https://picsum.photos/300/300',
-          },
-          {
-            id: 4,
-            name: 'yellow',
-            image: 'https://picsum.photos/300/300',
-          },
-        ],
       },
+      variants: [
+        {
+          id: 1,
+          name: 'green',
+          image: 'https://picsum.photos/300/300',
+        },
+        {
+          id: 2,
+          name: 'red',
+          image: 'https://picsum.photos/300/300',
+        },
+        {
+          id: 4,
+          name: 'yellow',
+          image: 'https://picsum.photos/300/300',
+        },
+      ],
     });
   }),
 
